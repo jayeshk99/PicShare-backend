@@ -11,9 +11,9 @@ import { UserService } from './user.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly useService: UserService) {}
+  constructor(private readonly userService: UserService) {}
   @Post('login')
   async login(@Body() userDto: LoginUserDto) {
-    return await this.useService.login(userDto.userName);
+    return await this.userService.login(userDto.userName);
   }
 }

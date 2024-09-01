@@ -20,11 +20,11 @@ export class FavouriteEntity extends BaseEntity {
   @Column({ name: 'post_id' })
   postId: string;
 
-  @ManyToOne(() => FavouriteEntity, (favourite) => favourite.userId)
+  @ManyToOne(() => UserEntity, (user) => user.favourites)
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @ManyToOne(() => FavouriteEntity, (favourite) => favourite.postId)
+  @ManyToOne(() => PostEntity, (post) => post.favourites)
   @JoinColumn({ name: 'post_id' })
   post: PostEntity;
 }

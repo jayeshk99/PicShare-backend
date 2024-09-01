@@ -2,11 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostEntity } from 'src/entities/post.entity';
+import { BaseRepository } from './base.repository';
 
 @Injectable()
-export class PostRepository {
+export class PostRepository extends BaseRepository<PostEntity, string> {
   constructor(
     @InjectRepository(PostEntity)
-    private readonly postRepository: Repository<PostEntity>,
-  ) {}
+    readonly postRepository: Repository<PostEntity>,
+  ) {
+    super(postRepository);
+  }
 }

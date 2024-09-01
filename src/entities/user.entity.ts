@@ -16,9 +16,9 @@ export class UserEntity extends BaseEntity {
   @Column({ name: 'user_name' })
   userName: string;
 
-  @OneToMany(() => UserEntity, (user) => user.posts)
+  @OneToMany(() => PostEntity, (post) => post.user)
   posts: PostEntity[];
 
-  @OneToMany(() => UserEntity, (user) => user.favourites)
+  @OneToMany(() => FavouriteEntity, (favourite) => favourite.user)
   favourites: FavouriteEntity[];
 }

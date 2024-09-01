@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/repositories/user.repository';
 
 @Injectable()
@@ -17,7 +17,10 @@ export class UserService {
         const newUser = await this.userRepository.save(userData);
         userId = newUser.id;
       }
-      return userId;
+      return {
+        statusCode: HttpStatus.OK,
+        data: { userId, userName: user.userName },
+      };
     } catch (error) {
       throw error;
     }

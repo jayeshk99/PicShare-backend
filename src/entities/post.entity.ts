@@ -24,10 +24,10 @@ export class PostEntity extends BaseEntity {
   @Column({ name: 'created_by' })
   createdBy: string;
 
-  @ManyToOne(() => PostEntity, (post) => post.createdBy)
+  @ManyToOne(() => UserEntity, (user) => user.posts)
   @JoinColumn({ name: 'created_by' })
   user: UserEntity;
 
-  @OneToMany(() => PostEntity, (post) => post.favourites)
+  @OneToMany(() => FavouriteEntity, (favourite) => favourite.post)
   favourites: FavouriteEntity[];
 }
