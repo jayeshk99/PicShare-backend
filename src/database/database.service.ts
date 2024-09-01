@@ -5,6 +5,9 @@ import {
   TypeOrmOptionsFactory,
 } from '@nestjs/typeorm';
 import { ConfigService } from '../config/config.service';
+import { UserEntity } from 'src/entities/user.entity';
+import { PostEntity } from 'src/entities/post.entity';
+import { FavouriteEntity } from 'src/entities/favourite.entity';
 @Injectable()
 export class DatabaseService implements TypeOrmOptionsFactory {
   constructor(private readonly configService: ConfigService) {}
@@ -17,8 +20,8 @@ export class DatabaseService implements TypeOrmOptionsFactory {
       username: this.configService.getDatabaseUser(),
       password: this.configService.getDatabasePassword(),
       database: this.configService.getDatabaseName(),
-      //   entities: [...EntityLists],
-      autoLoadEntities: true,
+      entities: [UserEntity, PostEntity, FavouriteEntity],
+      //   autoLoadEntities: true,
       synchronize: false,
       logging: false,
     };
