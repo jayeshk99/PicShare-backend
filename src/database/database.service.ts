@@ -22,7 +22,7 @@ export class DatabaseService implements TypeOrmOptionsFactory {
       database: this.configService.getDatabaseName(),
       entities: [UserEntity, PostEntity, FavouriteEntity],
       //   autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true,
       logging: false,
     };
   }

@@ -22,7 +22,7 @@ export class PostEntity extends BaseEntity {
   title: string;
 
   @Column({ name: 'created_by' })
-  createdBy: number;
+  createdBy: string;
 
   @ManyToOne(() => PostEntity, (post) => post.createdBy)
   @JoinColumn({ name: 'created_by' })

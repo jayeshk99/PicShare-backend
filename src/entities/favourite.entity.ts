@@ -15,16 +15,16 @@ import { PostEntity } from './post.entity';
 @Entity({ name: 'favourite' })
 export class FavouriteEntity extends BaseEntity {
   @Column({ name: 'user_id' })
-  userId: number;
+  userId: string;
 
   @Column({ name: 'post_id' })
-  postId: number;
+  postId: string;
 
   @ManyToOne(() => FavouriteEntity, (favourite) => favourite.userId)
   @JoinColumn({ name: 'user_id' })
   user: UserEntity;
 
-  @ManyToOne(() => FavouriteEntity, (favourite) => favourite.userId)
+  @ManyToOne(() => FavouriteEntity, (favourite) => favourite.postId)
   @JoinColumn({ name: 'post_id' })
   post: PostEntity;
 }
