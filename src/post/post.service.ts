@@ -15,7 +15,11 @@ export class PostService {
     try {
       const posts = await this.postRepository.findWithRelations({
         relations: ['user'],
+        order: {
+          createdAt: 'DESC',
+        },
       });
+
       return {
         statusCode: HttpStatus.OK,
         data: posts,
@@ -45,6 +49,9 @@ export class PostService {
       const favouritePosts = await this.favouriteRepository.findWithRelations({
         where: { userId },
         relations: ['post', 'user'],
+        order: {
+          createdAt: 'DESC',
+        },
       });
       return { statusCode: HttpStatus.OK, data: favouritePosts };
     } catch (error) {

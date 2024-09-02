@@ -34,10 +34,8 @@ export class AuthGuard implements CanActivate {
     if (!authHeader) {
       throw new UnauthorizedException('Authorization header is missing');
     }
-    console.log('authHeader:', authHeader);
 
     const token = authHeader.split(' ')[1];
-    console.log('token:', token);
     if (!token) {
       throw new UnauthorizedException('Token is missing');
     }
@@ -46,7 +44,6 @@ export class AuthGuard implements CanActivate {
       throw new NotFoundException(`User with ID ${token} not found`);
     }
     request.user = user;
-    console.log('user:', user);
     return true;
   }
 }

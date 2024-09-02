@@ -34,7 +34,6 @@ export class PostController {
     @Req() req: CustomRequest,
   ) {
     const userId = req.user.id;
-    console.log('user data ', req.user);
     return await this.postService.create({ ...sharePostDto, userId });
   }
 
