@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Post,
   Req,
@@ -12,12 +13,13 @@ import { PostService } from './post.service';
 import { CreateImageDto } from './dto/share-post.dto';
 import { AddFavouriteDto } from './dto/add-favourite.dto';
 import { AuthGuard } from 'src/guards/authGuard';
-import { CustomRequest } from 'src/types/express';
+import { CustomRequest } from 'src/types/request';
 import { SkipAuth } from 'src/decorators/skip-auth.decorator';
 
 @Controller('post')
 @UseGuards(AuthGuard)
 export class PostController {
+  private readonly logger = new Logger(PostController.name);
   constructor(private readonly postService: PostService) {}
 
   @Get('all')

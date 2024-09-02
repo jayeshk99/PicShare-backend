@@ -9,7 +9,7 @@ import { Request } from 'express';
 import { IS_PUBLIC_KEY } from 'src/decorators/skip-auth.decorator';
 import { UserEntity } from 'src/entities/user.entity';
 import { UserRepository } from 'src/repositories/user.repository';
-import { CustomRequest } from 'src/types/express';
+import { CustomRequest } from 'src/types/request';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

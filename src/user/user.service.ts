@@ -8,14 +8,14 @@ export class UserService {
   async login(userName: string) {
     try {
       let userId: string;
-      const user = await this.userRepository.findByCondition({
+      let user = await this.userRepository.findByCondition({
         where: { userName },
       });
       userId = user?.id;
       if (!user) {
         const userData = this.userRepository.create({ userName });
-        const newUser = await this.userRepository.save(userData);
-        userId = newUser.id;
+        user = await this.userRepository.save(userData);
+        userId = user.id;
       }
       return {
         statusCode: HttpStatus.OK,

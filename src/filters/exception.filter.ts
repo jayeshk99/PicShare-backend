@@ -11,7 +11,7 @@ import { Request, Response } from 'express';
 export class GlobalExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(GlobalExceptionFilter.name);
   catch(exception: any, host: ArgumentsHost) {
-    console.log(exception);
+    this.logger.error(exception.stack);
     const context = host.switchToHttp();
     const request = context.getRequest<Request>();
     const response = context.getResponse<Response>();
