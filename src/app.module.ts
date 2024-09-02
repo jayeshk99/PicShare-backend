@@ -8,7 +8,7 @@ import { UserController } from './user/user.controller';
 import { PostModule } from './post/post.module';
 
 @Module({
-  imports: [DatabaseModule, UserModule, PostModule],
+  imports: [DatabaseModule, RepositoriesModule, UserModule, PostModule],
   controllers: [AppController],
   providers: [AppService],
 })

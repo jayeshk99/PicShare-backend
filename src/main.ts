@@ -5,11 +5,10 @@ import { GlobalExceptionFilter } from './filters/exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // const globalPrefix = 'api';
   const port = process.env['PORT'] || 3002;
   app.useGlobalFilters(new GlobalExceptionFilter());
-  // app.setGlobalPrefix(globalPrefix);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.enableCors();
   await app.listen(port);
 }
 

@@ -9,8 +9,4 @@ export class CreateImageDto {
   @IsString()
   @IsNotEmpty({ message: 'Title is required' })
   title: string;
-
-  @IsString()
-  @IsNotEmpty({ message: 'userId is required' })
-  userId: string;
 }
