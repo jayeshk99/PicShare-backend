@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
 import { FavouriteRepository } from 'src/repositories/favourite.repository';
 import { PostRepository } from 'src/repositories/post.repository';
 import { UserRepository } from 'src/repositories/user.repository';
@@ -54,8 +54,12 @@ export class PostService {
   async addToFavourite(data: IAddFavourite) {
     try {
       const { postId, userId } = data;
+      const postData = await this.postRepository.findOneById(postId);
+      if (!postData)
+        throw new NotFoundException(`PostID ${postId} does not exist`);
       const favouriteData = this.favouriteRepository.create({ postId, userId });
-      const favouriteResult = this.favouriteRepository.save(favouriteData);
+      const favouriteResult =
+        await this.favouriteRepository.save(favouriteData);
       return {
         statusCode: HttpStatus.CREATED,
         data: 'Favourite added succesfully',
@@ -68,6 +72,8 @@ export class PostService {
     try {
       const favouriteData =
         await this.favouriteRepository.findOneById(favouritePostId);
+      if (!favouriteData)
+        throw new NotFoundException(`Favourite post Id does not exist`);
       const result = await this.favouriteRepository.remove(favouriteData);
       return {
         statusCode: HttpStatus.OK,
