@@ -37,6 +37,7 @@ export class PostService {
         createdBy: userId,
         title: title,
       });
+      console.log('postData:', postData);
       const newPost = await this.postRepository.save(postData);
       return { statusCode: HttpStatus.CREATED, data: newPost };
     } catch (error) {
