@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
-import { FavouriteRepository } from 'src/repositories/favourite.repository';
-import { PostRepository } from 'src/repositories/post.repository';
-import { UserRepository } from 'src/repositories/user.repository';
+import { FavouriteRepository } from '../repositories/favourite.repository';
+import { PostRepository } from '../repositories/post.repository';
+import { UserRepository } from '../repositories/user.repository';
 import { IAddFavourite, ISharePost } from './interfaces';
 
 @Injectable()

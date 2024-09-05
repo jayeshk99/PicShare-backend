@@ -12,9 +12,9 @@ import {
 import { PostService } from './post.service';
 import { CreateImageDto } from './dto/share-post.dto';
 import { AddFavouriteDto } from './dto/add-favourite.dto';
-import { AuthGuard } from 'src/guards/authGuard';
-import { CustomRequest } from 'src/types/request';
-import { SkipAuth } from 'src/decorators/skip-auth.decorator';
+import { AuthGuard } from '../guards/authGuard';
+import { CustomRequest } from '../types/request';
+import { SkipAuth } from '../decorators/skip-auth.decorator';
 
 @Controller('post')
 @UseGuards(AuthGuard)

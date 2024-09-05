@@ -7,10 +7,10 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Request } from 'express';
-import { IS_PUBLIC_KEY } from 'src/decorators/skip-auth.decorator';
-import { UserEntity } from 'src/entities/user.entity';
-import { UserRepository } from 'src/repositories/user.repository';
-import { CustomRequest } from 'src/types/request';
+import { IS_PUBLIC_KEY } from '../decorators/skip-auth.decorator';
+import { UserEntity } from '../entities/user.entity';
+import { UserRepository } from '../repositories/user.repository';
+import { CustomRequest } from '../types/request';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
