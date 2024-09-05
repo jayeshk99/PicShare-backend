@@ -328,7 +328,6 @@ describe('PostService', () => {
     });
   });
 
-  // Test case for when the favourite post does not exist
   it('should throw a NotFoundException if the favourite post does not exist', async () => {
     const favouritePostId = 'nonexistentFav';
 
@@ -344,7 +343,6 @@ describe('PostService', () => {
     expect(favouriteRepository.remove).not.toHaveBeenCalled();
   });
 
-  // Test case for error handling in removing a favourite
   it('should throw an error if there is an issue while removing a favourite', async () => {
     const favouritePostId = 'fav1';
 

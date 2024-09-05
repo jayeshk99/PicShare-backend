@@ -24,7 +24,7 @@ export class PostController {
 
   @Get('all')
   @SkipAuth()
-  async login() {
+  async getAllPosts() {
     return await this.postService.getAll();
   }
 
