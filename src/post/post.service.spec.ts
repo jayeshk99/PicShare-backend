@@ -15,6 +15,7 @@ describe('PostService', () => {
       create: jest.fn(),
       save: jest.fn(),
       findOneById: jest.fn(),
+      findAndCount: jest.fn(),
     };
     favouriteRepository = {
       findWithRelations: jest.fn(),
@@ -40,7 +41,7 @@ describe('PostService', () => {
   });
 
   //  getAll method ------------------
-  it('getAll => should return all the posts', async () => {
+  it('getAll => should return paginated posts with total count', async () => {
     const posts = [
       {
         id: 'abc',
@@ -57,22 +58,40 @@ describe('PostService', () => {
         updatedAt: new Date('2023-09-01T12:00:00'),
       },
     ];
-    (postRepository.findWithRelations as jest.Mock).mockResolvedValue(posts);
+    const totalCount = 1;
 
-    const result = await postService.getAll();
+    (postRepository.findAndCount as jest.Mock).mockResolvedValue([
+      posts,
+      totalCount,
+    ]);
+
+    const page = 1;
+    const limit = 10;
+    const result = await postService.getAll(page, limit);
 
     expect(result.data).toEqual(posts);
-    expect(result.statusCode).toBe(200);
+    expect(result.data.length).toBe(totalCount);
+    expect(result.statusCode).toBe(HttpStatus.OK);
   });
 
-  it('should throw an error if repository throws an error', async () => {
+  it('getAll => should throw an error if repository throws an error', async () => {
     jest
-      .spyOn(postRepository, 'findWithRelations')
+      .spyOn(postRepository, 'findAndCount')
       .mockRejectedValue(new Error('Repository Error'));
 
-    await expect(postService.getAll()).rejects.toThrow('Repository Error');
+    const page = 1;
+    const limit = 10;
 
-    expect(postRepository.findWithRelations).toHaveBeenCalled();
+    await expect(postService.getAll(page, limit)).rejects.toThrow(
+      'Repository Error',
+    );
+
+    expect(postRepository.findAndCount).toHaveBeenCalledWith({
+      relations: ['user', 'favourites'],
+      order: { createdAt: 'DESC' },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
   });
 
   // create method -----------------

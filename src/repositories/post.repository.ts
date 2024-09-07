@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { PostEntity } from '../entities/post.entity';
 import { BaseRepository } from './base.repository';
 
@@ -11,5 +11,8 @@ export class PostRepository extends BaseRepository<PostEntity, string> {
     readonly postRepository: Repository<PostEntity>,
   ) {
     super(postRepository);
+  }
+  async findAndCount(options: FindManyOptions<PostEntity>) {
+    return await this.postRepository.findAndCount(options);
   }
 }

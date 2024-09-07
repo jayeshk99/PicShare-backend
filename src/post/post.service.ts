@@ -17,18 +17,24 @@ export class PostService {
     private readonly favouriteRepository: FavouriteRepository,
   ) {}
 
-  async getAll() {
+  async getAll(page: number, limit: number) {
     try {
-      const posts = await this.postRepository.findWithRelations({
-        relations: ['user'],
+      const skip = (page - 1) * limit;
+
+      const [posts, totalCount] = await this.postRepository.findAndCount({
+        relations: ['user', 'favourites'],
         order: {
           createdAt: 'DESC',
         },
+        skip: skip,
+        take: limit,
       });
-
       return {
         statusCode: HttpStatus.OK,
         data: posts,
+        totalCount,
+        page,
+        totalPages: Math.ceil(totalCount / limit),
       };
     } catch (error) {
       this.logger.error(`Error in getting all posts: ${error}`);

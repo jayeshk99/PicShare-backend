@@ -6,6 +6,7 @@ import {
   Logger,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -24,8 +25,13 @@ export class PostController {
 
   @Get('all')
   @SkipAuth()
-  async getAllPosts() {
-    return await this.postService.getAll();
+  async getAllPosts(
+    @Query('page') page: string = '1',
+    @Query('limit') limit: string = '12',
+  ) {
+    const pageNumber = parseInt(page, 10);
+    const limitNumber = parseInt(limit, 10);
+    return await this.postService.getAll(pageNumber, limitNumber);
   }
 
   @Post('share')
