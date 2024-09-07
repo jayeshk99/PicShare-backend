@@ -1,33 +1,10 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+PicShare is a web app where users can share their photos, explore pictures from others, and save their favorites. It’s a simple and engaging platform for discovering and showcasing images.
 
 ## Project setup
-
+Node version: v20.17.0 <br>
+npm version: 10.8.2
 ```bash
 $ npm install
 ```
@@ -60,4 +37,259 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
+```
+
+## API Documentation
+
+
+### POST - User login <br>
+This API is used for user login. If the user does not exist, a new user will be created and logged in.
+```
+$ POST /user/login
+```
+Headers
+```
+Content-Type    application/json
+```
+Body
+```
+{
+  "userName": ""
+}
+```
+Response  
+Success (HTTP 200 OK)<br>
+Returns the userId and userName of the logged-in user.<br>
+```
+{
+  "statusCode": 200,
+  "data": {
+    "userId": "",
+    "userName": ""
+  }
+}
+```
+Error (HTTP 404 )<br>
+If the user does not exist and an error occurs during user creation.
+```
+{
+  "statusCode": 404,
+  "message": "User not found or could not be created"
+}
+```
+### GET - All Posts <br>
+This API is used for getting the Images list shared by all users.
+```
+$ GET /post/all
+```
+Headers
+```
+Content-Type    application/json
+```
+Query params
+```
+page (optional): The page number for pagination (default: 1).
+limit (optional): Number of posts per page (default: 12).
+```
+Response  
+Success (HTTP 200 OK)<br>
+Returns the images list..<br>
+```
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "id": "",
+      "imageUrl": "",
+      "title": "",
+      "user": {
+        "id": "",
+        "userName": ""
+      },
+      "favourites": [
+        { "id": "",
+          "userId": ""
+         }
+      ]
+    }
+  ],
+  "totalCount": 100,
+  "page": 1,
+  "totalPages": 10
+}
+```
+Error (HTTP 500 Internal Server Error)<br>
+If the user does not exist and an error occurs during user creation.
+```
+{
+  "statusCode": 500,
+  "message": "Error in getting all posts: error message",
+  "error": "Internal Server Error"
+}
+```
+### POST - Share Image <br>
+This API is used for sharing a image.
+```
+$ POST /post/share
+```
+Headers
+```
+Content-Type    application/json
+Authorization   Bearer xxx   (Bearer token which will be userId returned from login API.)
+```
+Body
+```
+{
+  "imageUrl": "https://example.com/image.jpg",
+  "title": "A beautiful scenery"
+}
+```
+Response  
+Success (HTTP 201 Created)<br>
+Returns the post details shared succesfully.<br>
+```
+{
+  "statusCode": 201,
+  "data": {
+    "id": "postId",
+    "imageUrl": "https://example.com/image.jpg",
+    "createdBy": "userId",
+    "title": "A beautiful scenery",
+    "createdAt": "2024-09-07T12:00:00.000Z"
+  }
+}
+```
+Error (HTTP 500 Internal Server Error)<br>
+If the user does not exist and an error occurs during user creation.
+```
+{
+  "statusCode": 500,
+  "message": "Error in creating post",
+  "error": "Internal Server Error"
+}
+```
+### GET Favourite Posts <br>
+This API is used for getting the favourite Images of the user logged in.
+```
+$ GET /post/favourites
+```
+Headers
+```
+Content-Type    application/json
+Authorization   Bearer xxx   (Bearer token which will be userId returned from login API.)
+```
+Response  
+Success (HTTP 200 OK)<br>
+Returns the images list..<br>
+```
+{
+  "statusCode": 200,
+  "data": [
+    {
+      "id": "string",
+      "post": {
+        "id": "string",
+        "title": "string",
+        "content": "string",
+        "createdAt": "string",
+        "updatedAt": "string"
+      },
+      "user": {
+        "id": "string",
+        "username": "string",
+        "email": "string"
+      },
+      "createdAt": "string",
+      "updatedAt": "string"
+    }
+  ]
+}
+```
+Error (HTTP 500 Internal Server Error)<br>
+Error occurred while retrieving the favourite posts.
+```
+{
+  "statusCode": 500,
+  "message": "Error in getting favourite posts for {userId} : {error}"
+}
+```
+### POST - Add to favourite <br>
+This API is used for adding a image to favourites.
+```
+$ POST /post/favourites/add
+```
+Headers
+```
+Content-Type    application/json
+Authorization   Bearer xxx   (Bearer token which will be userId returned from login API.)
+```
+Body
+```
+{
+  "postId": "string"
+}
+```
+Response  
+Success (HTTP 201 Created)<br>
+Returns the post details shared succesfully.<br>
+```
+{
+  "statusCode": 201,
+  "data": "Favourite added successfully"
+}
+```
+Error (HTTP 404)<br>
+The specified post ID does not exist.
+```
+{
+  "statusCode": 404,
+  "message": "PostID {postId} does not exist"
+}
+```
+Error (HTTP 500 Internal Server Error)<br>
+Error occurred while adding the post to favourites.
+```
+{
+  "statusCode": 500,
+  "message": "Error in adding favourite posts for {userId} : {error}"
+}
+```
+### DELETE - Remove from favourites <br>
+Deletes a post from the user's list of favourites.
+```
+$ DELETE /post/favourites/:favouriteId
+```
+Headers
+```
+Content-Type    application/json
+Authorization   Bearer xxx   (Bearer token which will be userId returned from login API.)
+```
+Path parameters
+```
+favouriteId: (string) The ID of the favourite post to be deleted.
+```
+Response  
+Success (HTTP 201 Created)<br>
+Returns the deletion success messege.<br>
+```
+{
+  "statusCode": 200,
+  "message": "Favourite pic deleted successfully"
+}
+```
+Error (HTTP 404)<br>
+The specified favourite post ID does not exist.
+```
+{
+  "statusCode": 404,
+  "message": "Favourite post Id does not exist"
+}
+```
+Error (HTTP 500 Internal Server Error)<br>
+Error occurred while deleting the post to favourites.
+```
+{
+  "statusCode": 500,
+  "message": "Error in deleting favourite post {favouritePostId} : {error}"
+}
 ```
