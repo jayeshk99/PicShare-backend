@@ -1,4 +1,9 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpStatus,
+  Injectable,
+  Logger,
+  NotFoundException,
+} from '@nestjs/common';
 import { FavouriteRepository } from '../repositories/favourite.repository';
 import { PostRepository } from '../repositories/post.repository';
 import { UserRepository } from '../repositories/user.repository';
@@ -6,6 +11,7 @@ import { IAddFavourite, ISharePost } from './interfaces';
 
 @Injectable()
 export class PostService {
+  private readonly logger = new Logger(PostService.name);
   constructor(
     private readonly postRepository: PostRepository,
     private readonly favouriteRepository: FavouriteRepository,
@@ -25,6 +31,7 @@ export class PostService {
         data: posts,
       };
     } catch (error) {
+      this.logger.error(`Error in getting all posts: ${error}`);
       throw error;
     }
   }
@@ -37,10 +44,10 @@ export class PostService {
         createdBy: userId,
         title: title,
       });
-      console.log('postData:', postData);
       const newPost = await this.postRepository.save(postData);
       return { statusCode: HttpStatus.CREATED, data: newPost };
     } catch (error) {
+      this.logger.error(`Error in creating post ${data}: ${error}`);
       throw error;
     }
   }
@@ -56,6 +63,9 @@ export class PostService {
       });
       return { statusCode: HttpStatus.OK, data: favouritePosts };
     } catch (error) {
+      this.logger.error(
+        `Error in getting favourite posts for ${userId} : ${error}`,
+      );
       throw error;
     }
   }
@@ -73,6 +83,9 @@ export class PostService {
         data: 'Favourite added succesfully',
       };
     } catch (error) {
+      this.logger.error(
+        `Error in adding favourite posts for ${data.userId} :  ${error}`,
+      );
       throw error;
     }
   }
@@ -80,14 +93,21 @@ export class PostService {
     try {
       const favouriteData =
         await this.favouriteRepository.findOneById(favouritePostId);
-      if (!favouriteData)
+      if (!favouriteData) {
+        this.logger.error(
+          `Favourite post id ${favouritePostId} does not exist`,
+        );
         throw new NotFoundException(`Favourite post Id does not exist`);
+      }
       const result = await this.favouriteRepository.remove(favouriteData);
       return {
         statusCode: HttpStatus.OK,
         message: 'Favourite pic deleted succesfully',
       };
     } catch (error) {
+      this.logger.error(
+        `Error in deleting favourite post ${favouritePostId} : ${error}`,
+      );
       throw error;
     }
   }
