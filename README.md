@@ -9,6 +9,30 @@ npm version: 10.8.2
 $ npm install
 ```
 
+## Docker setup
+
+This project contains the backend code and uses Docker Compose to set up the necessary services, including a database and the backend service itself. By following these steps, you can get everything running with a single command and access the backend service on a local host port.
+
+### Prerequisites
+
+Make sure you have the following installed on your local system:
+- Docker: [Install Docker](https://docs.docker.com/get-docker/)
+- Docker Compose: [Install Docker Compose](https://docs.docker.com/compose/install/)
+
+First, clone this repository to your local machine:
+
+```bash
+git clone https://github.com/jayeshk99/PicShare-backend.git
+cd PicShare-backend
+```
+Run the command with Docker Compose
+```bash
+docker-compose up -d
+```
+This will start the containers for database and the service. Service will be up and running on `http://localhost:3002`. \
+You can clone the frontend repository from `https://github.com/jayeshk99/picshare-frontend`, follow the steps to run it, it will connect the backend service to run.
+<br>
+Alternatively you can setup locally by following below steps.
 ## Database setup
 
 Create a database and provide the connection details in environment file.
